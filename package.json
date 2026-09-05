@@ -1,5 +1,5 @@
 {
-  "name": "sample-code",
+  "name": "soap-payment",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,8 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^2.2.0",
-    "express": "^5.1.0",
-    "node-fetch": "^3.3.2"
+  "dotenv": "^16.4.5",
+  "express": "^5.1.0",
+  "node-fetch": "^3.3.2"
   },
   "type": "module"
 }
