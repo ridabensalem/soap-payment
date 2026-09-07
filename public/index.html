@@ -1,9 +1,158 @@
 <!DOCTYPE html>
-<html>
-  <body>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bank of SOAP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #10233F;
+    --ink-soft: #5B6B7C;
+    --paper: #EAF2F3;
+    --surface: #FFFFFF;
+    --line: #D8E3E3;
+    --accent: #1F7A6C;
+    --accent-ink: #FFFFFF;
+    --bubble-a: #BFE3E0;
+    --bubble-b: #D9C9F0;
+    --focus: #1F7A6C;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--paper);
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .bubble.one { width: 180px; height: 180px; top: -60px; left: -50px; background: radial-gradient(circle at 30% 30%, var(--bubble-a), transparent 70%); }
+  .bubble.two { width: 120px; height: 120px; bottom: -30px; right: -20px; background: radial-gradient(circle at 30% 30%, var(--bubble-b), transparent 70%); }
+  .bubble.three { width: 60px; height: 60px; top: 40px; right: 60px; background: radial-gradient(circle at 30% 30%, var(--bubble-b), transparent 70%); opacity: 0.4; }
+
+  .card {
+    position: relative;
+    background: var(--surface);
+    width: 100%;
+    max-width: 380px;
+    border-radius: 20px;
+    padding: 36px 28px;
+    box-shadow: 0 20px 40px -20px rgba(16, 35, 63, 0.25);
+    border: 1px solid var(--line);
+  }
+  .brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .wordmark {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  .env-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 4px 10px 4px 8px;
+  }
+  .env-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  hr {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 0 0 24px;
+  }
+  .greeting {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 500;
+    margin: 0 0 6px;
+    line-height: 1.2;
+  }
+  .subtext {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0 0 28px;
+  }
+  button {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .deposit-btn {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+  }
+  .deposit-btn:hover { background: #1a6a5d; }
+  .withdraw-btn {
+    margin-top: 12px;
+    background: none;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .withdraw-btn:hover { border-color: var(--ink-soft); }
+  button:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  .footnote {
+    margin: 20px 0 0;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <div class="bubble one"></div>
+  <div class="bubble two"></div>
+  <div class="bubble three"></div>
+  <div class="card">
+    <div class="brand-row">
+      <span class="wordmark">Bank of SOAP</span>
+      <span class="env-badge"><span class="env-dot"></span>Sandbox</span>
+    </div>
+    <hr>
+    <p class="greeting">Manage your balance</p>
+    <p class="subtext">Add funds or take money out — it only takes a moment.</p>
     <form method="POST" action="/submit">
-      <button type="submit" name="type" value="deposit">Deposit</button>
-      <button type="submit" name="type" value="withdrawal">Withdraw</button>
+      <button class="deposit-btn" type="submit" name="type" value="deposit">Deposit funds</button>
+      <button class="withdraw-btn" type="submit" name="type" value="withdrawal">Withdraw funds</button>
     </form>
-  </body>
+    <p class="footnote">Payments are simulated locally — no funds move.</p>
+  </div>
+</body>
 </html>

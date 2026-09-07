@@ -102,26 +102,221 @@ app.get('/mock-checkout/:id', (req, res) => {
   const amount = (checkout.amount_cents / 100).toFixed(2)
 
   res.send(`<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Soap Mock Checkout</title>
-  <style>
-    body { font-family: sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; background:#f5f5f7; }
-    .card { background:white; padding:32px; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,.1); width:320px; text-align:center; }
-    button { display:block; width:100%; padding:12px; margin-top:12px; border:none; border-radius:8px; font-size:15px; cursor:pointer; }
-    .approve { background:#16a34a; color:white; }
-    .decline { background:#dc2626; color:white; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bank of SOAP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #10233F;
+    --ink-soft: #5B6B7C;
+    --paper: #EAF2F3;
+    --surface: #FFFFFF;
+    --line: #D8E3E3;
+    --accent: #1F7A6C;
+    --accent-ink: #FFFFFF;
+    --decline: #9A4B3A;
+    --bubble-a: #BFE3E0;
+    --bubble-b: #D9C9F0;
+    --focus: #1F7A6C;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--paper);
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .bubble.one { width: 180px; height: 180px; top: -60px; left: -50px; background: radial-gradient(circle at 30% 30%, var(--bubble-a), transparent 70%); }
+  .bubble.two { width: 120px; height: 120px; bottom: -30px; right: -20px; background: radial-gradient(circle at 30% 30%, var(--bubble-b), transparent 70%); }
+  .bubble.three { width: 60px; height: 60px; top: 40px; right: 60px; background: radial-gradient(circle at 30% 30%, var(--bubble-b), transparent 70%); opacity: 0.4; }
+
+  .card {
+    position: relative;
+    background: var(--surface);
+    width: 100%;
+    max-width: 380px;
+    border-radius: 20px;
+    padding: 32px 28px;
+    box-shadow: 0 20px 40px -20px rgba(16, 35, 63, 0.25);
+    border: 1px solid var(--line);
+  }
+  .brand-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .wordmark {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+  .env-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 4px 10px 4px 8px;
+  }
+  .env-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  hr {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 0 0 24px;
+  }
+  .kind {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0 0 4px;
+  }
+  .amount {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin: 0 0 24px;
+    line-height: 1.1;
+  }
+  .details {
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    margin-bottom: 24px;
+  }
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    padding: 6px 0;
+  }
+  .detail-label { color: var(--ink-soft); }
+  .detail-value { color: var(--ink); text-align: right; }
+
+  button, .btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .approve {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: none;
+    border-radius: 10px;
+    transition: background 0.15s ease;
+  }
+  .approve:hover { background: #1a6a5d; }
+  .decline {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 10px;
+    background: none;
+    border: none;
+    color: var(--decline);
+    text-align: center;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 0.15s ease;
+  }
+  .decline:hover { text-decoration-color: var(--decline); }
+  button:focus-visible, .btn:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  .footnote {
+    margin: 20px 0 0;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+  .result-card { text-align: center; }
+  .result-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 22px;
+  }
+  .result-icon.success { background: #E4F2EE; color: var(--accent); }
+  .result-icon.failed { background: #F3E7E3; color: var(--decline); }
+  .result-title {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 8px;
+  }
+  .result-body {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+</style>
 </head>
 <body>
+  <div class="bubble one"></div>
+  <div class="bubble two"></div>
+  <div class="bubble three"></div>
+  
   <div class="card">
-    <h2>${label} $${amount}</h2>
-    <p>Mock Soap Checkout &mdash; simulate the outcome</p>
-    <form method="POST" action="/mock-checkout/${checkout.id}/resolve">
-      <button class="approve" name="outcome" value="succeed">Approve payment</button>
-      <button class="decline" name="outcome" value="fail">Decline payment</button>
+    <div class="brand-row">
+      <span class="wordmark">Bank of SOAP</span>
+      <span class="env-badge"><span class="env-dot"></span>Sandbox</span>
+    </div>
+    <hr>
+    <p class="kind">You're depositing</p>
+    <p class="amount">$50.00</p>
+    <div class="details">
+      <div class="detail-row">
+        <span class="detail-label">Customer</span>
+        <span class="detail-value">cus_12345</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Reference</span>
+        <span class="detail-value">chk_316b8b927574f9c4</span>
+      </div>
+    </div>
+    <form method="POST" action="/mock-checkout/chk_316b8b927574f9c4/resolve">
+      <button class="approve" type="submit" name="outcome" value="succeed">Approve payment</button>
+      <button class="decline" type="submit" name="outcome" value="fail">Decline payment</button>
     </form>
+    <p class="footnote">Payments are simulated locally — no funds move.</p>
   </div>
+  
 </body>
 </html>`)
 })
